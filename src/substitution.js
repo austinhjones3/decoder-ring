@@ -6,9 +6,65 @@
 const substitutionModule = (function () {
   // you can add any code you want within this function scope
 
-  function substitution(input, alphabet, encode = true) {
-    // your solution code here
+  function substitution(message, alphaInput, encode = true) {
+    if (!alphaInput || alphaInput.length !== 26 || !_isUnique(alphaInput)) {
+      return false;
+    }
+    alphaInput = alphaInput.toLowerCase();
+    message = message.toLowerCase();
+    const data = _data(alphaInput);
+    return encode ? _encode(message, data) : _decode(message, data);
   }
+
+  const _encode = (message, data) => {
+    let output = "";
+    for (let selected of message) {
+      const newCharObj = data.find((element) => {
+        return element.alphaChar.includes(selected);
+      });
+      newCharObj ? (output += newCharObj.newChar) : (output += selected);
+    }
+    return output;
+  };
+
+  const _decode = (message, data) => {
+    let output = "";
+    for (let selected of message) {
+      const alphaObj = data.find((element) => {
+        return element.newChar.includes(selected);
+      });
+      alphaObj ? (output += alphaObj.alphaChar) : (output += selected);
+    }
+    return output;
+  };
+
+  const _isUnique = (str) => {
+    const len = str.length;
+    for (let i = 0; i < len; i++) {
+      const temp = str[i];
+      for (let j = i + 1; j <= len - 1; j++) {
+        if (temp == str[j]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
+  const _data = (alphaInput) => {
+    const output = [];
+    for (let i = 0; i < alphaInput.length; i++) {
+      output.push({ newChar: alphaInput[i] });
+    }
+    const alphabet = [];
+    for (let i = 97; i < 123; i++) {
+      alphabet.push(String.fromCharCode(i));
+    }
+    for (let i = 0; i < output.length; i++) {
+      output[i].alphaChar = alphabet[i];
+    }
+    return output;
+  };
 
   return {
     substitution,
