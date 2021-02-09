@@ -4,70 +4,69 @@
 // of the anonymous function on line 6
 
 const polybiusModule = (function () {
-  const square = [
-    { letter: "A", number: "11" },
-    { letter: "B", number: "21" },
-    { letter: "C", number: "31" },
-    { letter: "D", number: "41" },
-    { letter: "E", number: "51" },
-    { letter: "F", number: "12" },
-    { letter: "G", number: "22" },
-    { letter: "H", number: "32" },
-    { letter: "I/J", number: "42" },
-    { letter: "K", number: "52" },
-    { letter: "L", number: "13" },
-    { letter: "M", number: "23" },
-    { letter: "N", number: "33" },
-    { letter: "O", number: "43" },
-    { letter: "P", number: "53" },
-    { letter: "Q", number: "14" },
-    { letter: "R", number: "24" },
-    { letter: "S", number: "34" },
-    { letter: "T", number: "44" },
-    { letter: "U", number: "54" },
-    { letter: "V", number: "15" },
-    { letter: "W", number: "25" },
-    { letter: "X", number: "35" },
-    { letter: "Y", number: "45" },
-    { letter: "Z", number: "55" },
-  ];
-
   function polybius(input, encode = true) {
-    input = input.toUpperCase();
-    return encode ? _encode(input, square) : _decode(input, square);
+    input = input.toLowerCase();
+    return encode ? _encode(input, _square()) : _decode(input, _square());
   }
 
   const _encode = (input, squareObjs) => {
-    let result = "";
+    let output = "";
     for (let selected of input) {
       const numObj = squareObjs.find((element) => {
         return element.letter.includes(selected);
       });
-      numObj ? (result += numObj.number) : (result += " ");
+      numObj ? (output += numObj.number) : (output += " ");
     }
-    return result;
+    return output;
   };
 
-  // Oh hi = 4332 3242
   const _decode = (input, squareObjs) => {
     const noSpaces = input.replace(" ", "");
     if (!(noSpaces.length % 2 === 0)) return false;
-    let result = "";
+    let output = "";
     let temp = "";
     for (let selected of input) {
-      if (selected === " ") result += selected;
+      if (selected === " ") output += selected;
       if (temp.length <= 1 && selected !== " ") temp += selected;
       if (temp.length === 2) {
-        const letterObj = squareObjs.find((element) => element.number == temp);
-        result += letterObj.letter;
+        const letterObj = squareObjs.find((element) => element.number === temp);
+        output += letterObj.letter;
         temp = "";
       }
     }
-    return result.toLowerCase();
+    return output;
   };
 
-  console.log(_decode("4332 3242", square));
-  // polybius("hello world", true);
+  const _square = () => {
+    return [
+      { letter: "a", number: "11" },
+      { letter: "b", number: "21" },
+      { letter: "c", number: "31" },
+      { letter: "d", number: "41" },
+      { letter: "e", number: "51" },
+      { letter: "f", number: "12" },
+      { letter: "g", number: "22" },
+      { letter: "h", number: "32" },
+      { letter: "i/j", number: "42" },
+      { letter: "k", number: "52" },
+      { letter: "l", number: "13" },
+      { letter: "m", number: "23" },
+      { letter: "n", number: "33" },
+      { letter: "o", number: "43" },
+      { letter: "p", number: "53" },
+      { letter: "q", number: "14" },
+      { letter: "r", number: "24" },
+      { letter: "s", number: "34" },
+      { letter: "t", number: "44" },
+      { letter: "u", number: "54" },
+      { letter: "v", number: "15" },
+      { letter: "w", number: "25" },
+      { letter: "x", number: "35" },
+      { letter: "y", number: "45" },
+      { letter: "z", number: "55" },
+    ];
+  };
+
   return {
     polybius,
   };
