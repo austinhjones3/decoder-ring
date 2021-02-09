@@ -1,35 +1,62 @@
-// Please refrain from tampering with the setup code provided here,
-// as the index.html and test files rely on this setup to work properly.
-// Only add code (e.g., helper methods, variables, etc.) within the scope
-// of the anonymous function on line 6
-
 const polybiusModule = (function () {
+  /**
+   * @function polybius()
+   * @param {String} input
+   * @param {Boolean} encode
+   * @returns {Boolean or String} false, an encoded message, or decoded message
+   */
   function polybius(input, encode = true) {
+    // ignore capital letters
     input = input.toLowerCase();
-    return encode ? _encode(input, _square()) : _decode(input, _square());
+    // if encode is true, return encoded message, if not, return decoded message
+    return encode ? _encode(input, _data()) : _decode(input, _data());
   }
 
-  const _encode = (input, squareObjs) => {
+  /**
+   * @function _encode()
+   * @param {String} input
+   * @param {Object[]} data - each object contains the letter and
+   * its encoded counterpart
+   * @returns {String} - encoded message
+   */
+  const _encode = (input, data) => {
     let output = "";
     for (let selected of input) {
-      const numObj = squareObjs.find((element) => {
+      // get the object containing the current letter to get the encoded value
+      const numObj = data.find((element) => {
         return element.letter.includes(selected);
       });
+      // if found, add the letter's encoded number to output. If not, add a space.
       numObj ? (output += numObj.number) : (output += " ");
     }
     return output;
   };
 
-  const _decode = (input, squareObjs) => {
+  /**
+   * @function _decode()
+   * @param {String} input
+   * @param {Object[]} data - each object contains the letter and
+   * its encoded counterpart
+   * @returns {String} - decoded message
+   */
+  const _decode = (input, data) => {
+    // get the input without spaces to make sure the number of digits is even
     const noSpaces = input.replace(" ", "");
+    // checks if even
     if (noSpaces.length % 2 !== 0) return false;
+
     let output = "";
+    // temp variable meant to store up to 2 digits and then reset once decoded
     let temp = "";
     for (let selected of input) {
+      // pass spaces through without decoding
       if (selected === " ") output += selected;
-      if (temp.length <= 1 && selected !== " ") temp += selected;
+      // add digit to temp if less than 2
+      if (temp.length < 2 && selected !== " ") temp += selected;
+      /* when temp.length is 2, decode the digits to their letter and reset temp
+      to be empty so we can decode the next 2 digits */
       if (temp.length === 2) {
-        const letterObj = squareObjs.find((element) => element.number === temp);
+        const letterObj = data.find((element) => element.number === temp);
         output += letterObj.letter;
         temp = "";
       }
@@ -37,7 +64,11 @@ const polybiusModule = (function () {
     return output;
   };
 
-  const _square = () => {
+  /**
+   * @function _data()
+   * @returns {Object[]} - defines the data needed to encode/decode
+   */
+  const _data = () => {
     return [
       { letter: "a", number: "11" },
       { letter: "b", number: "21" },
