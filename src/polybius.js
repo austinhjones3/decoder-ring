@@ -22,7 +22,7 @@ const polybiusModule = (function () {
 
   const _decode = (input, squareObjs) => {
     const noSpaces = input.replace(" ", "");
-    if (!(noSpaces.length % 2 === 0)) return false;
+    if (noSpaces.length % 2 !== 0) return false;
     let output = "";
     let temp = "";
     for (let selected of input) {
