@@ -53,15 +53,9 @@ const substitutionModule = (function () {
 
   const _data = (alphaInput) => {
     const output = [];
+    const alphabet = "abcdefghijklmnopqrstuvwxyz";
     for (let i = 0; i < alphaInput.length; i++) {
-      output.push({ newChar: alphaInput[i] });
-    }
-    const alphabet = [];
-    for (let i = 97; i < 123; i++) {
-      alphabet.push(String.fromCharCode(i));
-    }
-    for (let i = 0; i < output.length; i++) {
-      output[i].alphaChar = alphabet[i];
+      output.push({ newChar: alphaInput[i], alphaChar: alphabet.charAt(i) });
     }
     return output;
   };
