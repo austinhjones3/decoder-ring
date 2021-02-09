@@ -17,7 +17,6 @@ const substitutionModule = (function () {
     message = message.toLowerCase();
     // get data to encode/decode with
     const data = _data(alphaInput);
-    // if encode is true, encode, If not, decode
     return encode ? _encode(message, data) : _decode(message, data);
   }
 
@@ -67,12 +66,12 @@ const substitutionModule = (function () {
    */
   const _isUnique = (str) => {
     const len = str.length;
+    /* if the current char is identical to the next char, the string is not unique,
+    it will return false */
     for (let i = 0; i < len; i++) {
-      // store current char in temp to compare to next char
       const temp = str[i];
       // j = the char after charAt(i)
       for (let j = i + 1; j <= len - 1; j++) {
-        // if true, the string is not unique
         if (temp == str[j]) {
           return false;
         }
