@@ -72,9 +72,7 @@ const substitutionModule = (function () {
       const temp = str[i];
       // j = the char after charAt(i)
       for (let j = i + 1; j <= len - 1; j++) {
-        if (temp == str[j]) {
-          return false;
-        }
+        if (temp == str[j]) return false;
       }
     }
     return true;
